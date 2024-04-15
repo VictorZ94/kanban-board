@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/libs/prisma";
+import { db } from "@/libs/prisma";
 
 export async function GET() {
   try {
-    const tasks = await prisma.task.findMany();
+    const tasks = await db.task.findMany();
     console.log(tasks);
 
     return NextResponse.json({
@@ -36,11 +36,11 @@ export async function POST(request: Request) {
     const { title, description } = await request.json();
     console.log(title, description);
 
-    const newTask = await prisma.task.create({
+    const newTask = await db.task.create({
       data: {
         title,
         description,
-        user_id: 1,
+        // userId: 1,
       },
     });
 
