@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .hero-title {
-  font-size: clamp(40px,5vw,60px);
+  font-size: clamp(40px,4vw, 40px);
   line-height: normal;
   font-weight: 700;
 }
