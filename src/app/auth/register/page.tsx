@@ -1,9 +1,11 @@
+"use client"
 // @packages
 import { useState } from "react";
 import { Button, Label, TextInput } from "flowbite-react";
 import { FaUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-const Register = () => {
+const RegisterPage = () => {
   const [isErrorPassword, setIsErrorPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -11,14 +13,15 @@ const Register = () => {
     password: "",
     re_password: "",
   });
+  const router = useRouter();
 
   const { name, email, password, re_password } = formData;
 
-  const handleOnChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsErrorPassword(false);
 
@@ -26,15 +29,36 @@ const Register = () => {
       setIsErrorPassword(true);
       return;
     }
+    try {
+      const res = await fetch("/api/auth/register/", {
+        method: "POST",
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        }),
+        headers: {
+          "content-type": "application/json"
+        }
+      })
+  
+      // const resJSON = await res.json();
+      // console.log(resJSON);
+      if (res.ok) {
+        router.push("/auth/login")
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
     <div className="px-4 mt-14 mx-auto max-w-md mb-5">
-      <h1 className="font-bold text-5xl flex-row md:flex md:justify-center">
+      <h1 className="font-bold text-5xl flex-row md:flex md:justify-center text-white">
         <FaUser className="mr-3" />
         Sing Up
       </h1>
-      <p className="my-10 text-center text-lg">Please create your account</p>
+      <p className="my-2 text-center text-lg text-white">Please create your account</p>
       <form className="flex max-w-md flex-col gap-4" onSubmit={handleOnSubmit}>
         <div>
           <div className="mb-2 block">
@@ -116,16 +140,12 @@ const Register = () => {
           </div>
         )}
         <Button type="submit" className="my-5">
-          Submit
+          Sign in
         </Button>
       </form>
-      <p className="mt-3 text-sm">
-        Already have an account{" "}
-        <Link to={"/login"} className="text-cyan-500">
-          Sign In
-        </Link>
-      </p>
-      {isError && (
+      {/* 
+       */}
+      {/* {isError && (
         <div
           className="flex items-center p-4 my-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
           role="alert"
@@ -142,12 +162,12 @@ const Register = () => {
           <span className="sr-only">Info</span>
           <div>
             <span className="font-medium">Danger alert!</span> <br></br>
-            {message}
+             {message}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
-export default Register;
+export default RegisterPage;
