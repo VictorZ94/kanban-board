@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/libs/prisma";
-import { Prisma } from "@prisma/client";
+import { db } from "@/libs/prisma";
 
 interface Params {
   params: { id: string };
@@ -8,7 +7,7 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    const task = await prisma.task.findFirst({
+    const task = await db.task.findFirst({
       where: {
         id: Number(params.id),
       },
@@ -35,7 +34,7 @@ export async function GET(request: Request, { params }: Params) {
 
 export async function DELETE(request: Request, { params }: Params) {
   try {
-    const deleteTask = await prisma.task.delete({
+    const deleteTask = await db.task.delete({
       where: {
         id: Number(params.id),
       },
@@ -63,7 +62,7 @@ export async function PUT(request: Request, { params }: Params) {
   try {
     const { title, description } = await request.json();
 
-    const updateTask = await prisma.task.update({
+    const updateTask = await db.task.update({
       where: {
         id: Number(params.id),
       },
