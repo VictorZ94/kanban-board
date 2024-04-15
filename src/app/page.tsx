@@ -7,12 +7,40 @@ import dynamic from "next/dynamic";
 import { Flowbite } from "flowbite-react";
 import ColumnModal from "@/components/ColumnModal";
 const Column = dynamic(() => import("@/components/Column"), { ssr: false });
+import Navbar from "@/components/Navbar";
 
 const initialData = {  
-  columnOrder: ["column-1", "column-2", "column-3"]
+  columnOrder: ["column-1", "column-2", "column-3"],
+  columns: {
+    "column-1": {
+      id: "column-1",
+      title: "To do",
+      taskIds: [1, 2, 3, 4, 5, 6],
+    },
+    "column-2": {
+      id: "column-2",
+      title: "Progress",
+      taskIds: [],
+    },
+    "column-3": {
+      id: "column-3",
+      title: "Completed",
+      taskIds: [],
+    },
+  },
+  tasks: {
+    1: { id: 1, title: "Configure Next.js application" },
+    2: { id: 2, title: "Configure Next.js and tailwind" },
+    3: { id: 3, title: "Create side bar navigation menú" },
+    4: { id: 4, title: "Create page footer" },
+    5: { id: 5, title: "Create page navigation menú" },
+    6: { id: 6, title: "Create page layout" },
+    7: { id: 7, title: "new Home layout new" },
+  },
 }
 
 function Home(): JSX.Element  {
+
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -94,17 +122,16 @@ function Home(): JSX.Element  {
     setData(newData)
   }
 
-  // console.log("data", data);
-
   return (
     <Flowbite>
-      <header className="w-full text-center mt-9">
+      <Navbar />
+      {/* <header className="w-full text-center mt-9">
         <h1 className="bg-clip-text hero-title bg-gradient-to-b from-slate-900 to-slate-900/70 dark:from-white dark:to-white/40 text-transparent border-none">
           Kanban board app
         </h1>
-        {/* <h2 className="text-white text-xl">Kanban board</h2> */}
-      </header>
-      <main className="mx-16 mt-5 flex space-x-4 p-4 rounded-xl">
+        <h2 className="text-white text-xl">Kanban board</h2>
+      </header> */}
+      <main className="mx-16 mt-24 flex space-x-4 p-4 rounded-xl">
         <DragDropContext onDragEnd={handleOnDragEnd}>
       
           {data.columnOrder.map((columnId) => {
@@ -128,5 +155,3 @@ function Home(): JSX.Element  {
 }
 
 export default Home;
-
-
