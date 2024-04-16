@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SessionWrapper from "@/components/SessionWrapper";
+import { Flowbite } from "flowbite-react";
+import { AppWrapper } from "@/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark bg-slate-900">
-      <body className={inter.className}>{children}</body>
+      <SessionWrapper>
+        <AppWrapper>
+          <Flowbite>
+            <body className={inter.className}>{children}</body>
+          </Flowbite>
+        </AppWrapper>
+      </SessionWrapper>
     </html>
   );
 }
