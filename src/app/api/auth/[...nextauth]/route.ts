@@ -50,6 +50,12 @@ export const authOptions = {
   pages: {
     signIn: "/auth/login",
   },
+  callbacks: {
+    async session({ session, token }) {
+      session.user.userId = token.sub;
+      return Promise.resolve(session);
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

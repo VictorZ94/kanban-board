@@ -1,48 +1,20 @@
 "use client"
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { DragDropContext, DropResult, OnDragEndResponder } from "react-beautiful-dnd";
-import { useState } from "react";
+import { DragDropContext, Draggable, DropResult, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
+import { useEffect, useState } from "react";
 import { type TaskTypes, type ColumnTypes } from "@/types";
 import dynamic from "next/dynamic";
-import { Flowbite } from "flowbite-react";
 import ColumnModal from "@/components/ColumnModal";
 const Column = dynamic(() => import("@/components/Column"), { ssr: false });
 import Navbar from "@/components/Navbar";
-
-const initialData = {  
-  columnOrder: ["column-1", "column-2", "column-3"],
-  columns: {
-    "column-1": {
-      id: "column-1",
-      title: "To do",
-      taskIds: [1, 2, 3, 4, 5, 6],
-    },
-    "column-2": {
-      id: "column-2",
-      title: "Progress",
-      taskIds: [],
-    },
-    "column-3": {
-      id: "column-3",
-      title: "Completed",
-      taskIds: [],
-    },
-  },
-  tasks: {
-    1: { id: 1, title: "Configure Next.js application" },
-    2: { id: 2, title: "Configure Next.js and tailwind" },
-    3: { id: 3, title: "Create side bar navigation menú" },
-    4: { id: 4, title: "Create page footer" },
-    5: { id: 5, title: "Create page navigation menú" },
-    6: { id: 6, title: "Create page layout" },
-    7: { id: 7, title: "new Home layout new" },
-  },
-}
+import { useSession } from "next-auth/react";
+import { useAppContext } from "@/context";
 
 function Home(): JSX.Element  {
-
-  const [data, setData] = useState(initialData);
+  const { state:datanew } = useAppContext();
+  const [data, setData] = useState({});
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const toggleModalColumn = () => setOpenModal(!openModal);
 
@@ -122,35 +94,41 @@ function Home(): JSX.Element  {
     setData(newData)
   }
 
+  useEffect(() => {
+    if (datanew) {
+      setData(datanew)
+    }
+  }, [datanew])
+
   return (
-    <Flowbite>
-      <Navbar />
-      {/* <header className="w-full text-center mt-9">
-        <h1 className="bg-clip-text hero-title bg-gradient-to-b from-slate-900 to-slate-900/70 dark:from-white dark:to-white/40 text-transparent border-none">
-          Kanban board app
-        </h1>
-        <h2 className="text-white text-xl">Kanban board</h2>
-      </header> */}
+    <>
+      <Navbar name={session?.user?.name} />
       <main className="mx-16 mt-24 flex space-x-4 p-4 rounded-xl">
         <DragDropContext onDragEnd={handleOnDragEnd}>
-      
-          {data.columnOrder.map((columnId) => {
+          {datanew && data.columnsOrder?.map((columnId) => {
             const column: ColumnTypes = data.columns[columnId];
-            const tasks: TaskTypes[] = column.taskIds.map((taskId) => data.tasks[taskId]);
+            const tasks: TaskTypes[] = column?.tasks.map((taskId) => data.tasks[taskId]);
             return (
               <Column key={columnId} column={column} tasks={tasks}/>
             )
           })}
         </DragDropContext>
-        <ColumnModal openModal={openModal} setOpenModal={toggleModalColumn}></ColumnModal>
+        <ColumnModal
+          openModal={openModal}
+          setOpenModal={toggleModalColumn}
+          userId={session?.user.userId}
+        />
 
         <div className="w-full 2xl:w-96 h-min-lg bg-slate-700 rounded-xl">
-          <div className="flex justify-center items-center h-full hover:opacity-70 cursor-pointer">
-            <IoMdAddCircleOutline className="text-6xl text-white" onClick={toggleModalColumn}/>
+          <div
+            className="flex justify-center items-center h-full h-min-lg hover:opacity-70 cursor-pointer"
+            onClick={toggleModalColumn}
+          >
+            <IoMdAddCircleOutline className="text-6xl text-white"/>
           </div>
         </div>
       </main>
-    </Flowbite>
+    </>
   );
 }
 

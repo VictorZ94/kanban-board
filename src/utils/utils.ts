@@ -17,3 +17,30 @@ export function arrayToObject(array: Column[]): { [id: number]: Column } {
   });
   return result;
 }
+
+interface Column {
+  id: number;
+  title: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  tasks: number[];
+}
+
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  columnId: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}
+
+export function arrayToObjectTask(array: Task[]): { [id: number]: Task } {
+  const result: { [id: number]: Task } = {};
+  array.forEach((item) => {
+    result[item.id] = item;
+  });
+  return result;
+}

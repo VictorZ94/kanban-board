@@ -32,6 +32,33 @@ export async function GET(request: Request, { params }: Params) {
   }
 }
 
+export async function POST(request: Request, { params }: Params) {
+  try {
+    const { title, description } = await request.json();
+
+    const newTask = await db.task.create({
+      data: {
+        title,
+        description,
+        columnId: Number(params.id),
+      },
+    });
+
+    return NextResponse.json(newTask);
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+  }
+}
+
 export async function DELETE(request: Request, { params }: Params) {
   try {
     const deleteTask = await db.task.delete({

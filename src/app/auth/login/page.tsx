@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import React, { use, useState } from "react";
 import { IoEnter } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -32,8 +33,6 @@ const LoginPage = () => {
     } else {
       router.push("/")
     }
-
-    console.log(res);
   };
 
   return (
@@ -77,39 +76,12 @@ const LoginPage = () => {
           Login
         </Button>
       </form>
-      {/* <p className="mt-3 text-sm">
+      <p className="mt-3 text-sm">
         Don't have an account{" "}
-        <Link to={"/signup"} className="text-cyan-500">
-          Sign up
+        <Link href={"/auth/register"} className="text-cyan-500">
+          Register
         </Link>
       </p>
-      <p className="mt-3 text-sm">
-        Forgot your password{" "}
-        <Link to={"/reset-password"} className="text-cyan-500">
-          Reset password
-        </Link>
-      </p> */}
-      {/* {isError && (
-        <div
-          className="flex items-center p-4 my-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
-          role="alert"
-        >
-          <svg
-            className="flex-shrink-0 inline w-4 h-4 me-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-          </svg>
-          <span className="sr-only">Info</span>
-          <div>
-            <span className="font-medium">Danger alert!</span> <br></br>
-            {message}
-          </div>
-        </div>
-      )} */}
     </div>
   )
 }
