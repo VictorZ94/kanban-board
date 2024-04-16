@@ -19,13 +19,13 @@ function Home(): JSX.Element  {
   const toggleModalColumn = () => setOpenModal(!openModal);
 
   const reorderColumnList = (sourceCol: ColumnTypes, startIndex: number, endIndex: number): ColumnTypes => {
-    const newTaskIds = Array.from(sourceCol.taskIds);
+    const newTaskIds = Array.from(sourceCol.tasks);
     const [removed] = newTaskIds.splice(startIndex, 1);
     newTaskIds.splice(endIndex, 0, removed);
 
     const newColumn = {
       ...sourceCol,
-      taskIds: newTaskIds
+      tasks: newTaskIds
     }
 
     return newColumn;
@@ -46,8 +46,8 @@ function Home(): JSX.Element  {
     }
 
     // if the user drops within the same column but in a different position
-    const sourceCol = data.columns[source.droppableId];
-    const destionationCol = data.columns[destination.droppableId];
+    const sourceCol = data.columns[Number(source.droppableId)];
+    const destionationCol = data.columns[Number(destination.droppableId)];
 
     if (sourceCol.id === destionationCol.id) {
       const newColumn = reorderColumnList(
@@ -68,18 +68,18 @@ function Home(): JSX.Element  {
     }
 
     // if the moves from one column to another
-    const startTaskIds = Array.from(sourceCol.taskIds);
+    const startTaskIds = Array.from(sourceCol.tasks);
     const [removed] = startTaskIds.splice(source.index, 1);
     const newStartCol = {
       ...sourceCol,
-      taskIds: startTaskIds,
+      tasks: startTaskIds,
     }
 
-    const endTaskIds = Array.from(destionationCol.taskIds);
+    const endTaskIds = Array.from(destionationCol.tasks);
     endTaskIds.splice(destination.index, 0, removed);
     const newEndCol = {
       ...destionationCol,
-      taskIds: endTaskIds
+      tasks: endTaskIds
     }
 
     const newData = {
@@ -93,6 +93,8 @@ function Home(): JSX.Element  {
 
     setData(newData)
   }
+
+  console.log("data form me", data);
 
   useEffect(() => {
     if (datanew) {

@@ -41,7 +41,7 @@ const Column: React.FC<Props> = ({ column, tasks }) => {
         </span>
       </div>
       <div className="flex flex-col justify-between min-h-72 h-full">
-        <Droppable droppableId={`column-${column.id}`}>
+        <Droppable droppableId={`${column.id}`}>
           {(provided) => (
             <ul
               {...provided.droppableProps}
