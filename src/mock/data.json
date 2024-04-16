@@ -1,0 +1,29 @@
+{  
+  "columnOrder": ["column-1", "column-2", "column-3"],
+  "columns": {
+    "column-1": {
+      "id": "column-1",
+      "title": "To do",
+      "taskIds": [1, 2, 3, 4, 5, 6],
+    },
+    "column-2": {
+      "id": "column-2",
+      title: "Progress",
+      task"Id"s: [],
+    },
+    "column-3": {
+      "id": "column-3",
+      title: "Completed",
+      task"Id"s: [],
+    },
+  },
+  tasks: {
+    1: { "id": 1, title: "Configure Next.js application" },
+    2: { "id": 2, title: "Configure Next.js and tailwind" },
+    3: { "id": 3, title: "Create side bar navigation menú" },
+    4: { "id": 4, title: "Create page footer" },
+    5: { "id": 5, title: "Create page navigation menú" },
+    6: { "id": 6, title: "Create page layout" },
+    7: { "id": 7, title: "new Home layout new" },
+  },
+}
