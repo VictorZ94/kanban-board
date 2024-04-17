@@ -9,20 +9,22 @@ export function AppWrapper({ children } : { children: React.ReactNode }) {
   const [state, setState] = useState<any>({});
   const { data: session } = useSession();
 
-  useEffect(() => {
-    if (session?.user) {
-      const fetchInitialData = async () => {
-        const columns = await getColumnsByUserId(session?.user?.userId);
-        const columnsOrder = Object.keys(columns);
-        const tasks = await getTasks();
-        setState({ ...state, columns, tasks, columnsOrder });
-      }
-      fetchInitialData();
-    }
-  }, [session?.user])
+  // useEffect(() => {
+  //   if (session?.user) {
+      
+  //     fetchInitialData();
+  //   }
+  // }, [session?.user])
+
+  const fetchInitialData = async () => {
+    const columns = await getColumnsByUserId(session?.user?.userId);
+    const columnsOrder = Object.keys(columns);
+    const tasks = await getTasks();
+    setState({ ...state, columns, tasks, columnsOrder });
+  }
 
   return (
-    <AppContext.Provider value={{ state, setState }}>
+    <AppContext.Provider value={{ state, fetchInitialData, setState }}>
       {children}
     </AppContext.Provider>
   )

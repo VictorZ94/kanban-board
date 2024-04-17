@@ -1,8 +1,5 @@
 import { useAppContext } from "@/context";
-import { TaskTypes } from "@/types";
 import { CreateTask } from "@/utils/queries";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react";
 import React, { FC, useState } from "react";
 
@@ -14,7 +11,7 @@ interface Props {
 
 const TaskModal: FC<Props> = ({ openModal, setOpenModal, columnId }) => {
   const [dataTask, setDataTask] = useState({});
-  const { state: data, setState } = useAppContext();
+  const { state: data, fetchInitialData } = useAppContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataTask({
@@ -25,18 +22,9 @@ const TaskModal: FC<Props> = ({ openModal, setOpenModal, columnId }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newTask = await CreateTask(columnId, dataTask);
-    // console.log("task created", newTask);
+    await CreateTask(columnId, dataTask);
     setOpenModal(!openModal)
-    // if (!newTask) return
-    const { tasks } = data;
-    // console.log("tasks from context", tasks);
-    let allTask = {...tasks, [newTask.id]: newTask}
-    // console.log(allTask);
-    setState({
-      ...data,
-      tasks: allTask
-    })
+    fetchInitialData();
   }
 
   return (

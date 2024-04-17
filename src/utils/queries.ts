@@ -1,4 +1,4 @@
-import { TaskTypes } from "@/types";
+import { ColumnTypes, TaskTypes } from "@/types";
 import { arrayToObject, arrayToObjectTask } from "@/utils/utils";
 import axios from "axios";
 
@@ -78,9 +78,37 @@ export async function UpdateTask(data: TaskTypes) {
   }
 }
 
+export async function UpdateColumn(columnId: number, title: string) {
+  try {
+    const columnUpdated = await axios.put(`/api/columns/${columnId}`, {
+      title,
+    });
+    if (columnUpdated.status === 200) {
+      return columnUpdated.data;
+    } else {
+      return {};
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function RemoveTask(taskId: number) {
   try {
     const newColumn = await axios.delete(`/api/tasks/${taskId}`);
+    if (newColumn.status === 200) {
+      return newColumn.data;
+    } else {
+      return {};
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function removeColumn(columnId: number) {
+  try {
+    const newColumn = await axios.delete(`/api/columns/${columnId}`);
     if (newColumn.status === 200) {
       return newColumn.data;
     } else {

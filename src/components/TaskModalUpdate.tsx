@@ -14,8 +14,9 @@ interface Props {
 
 const TaskModalUpdate: FC<Props> = ({ openModal, setOpenModal, dataToUpdate }) => {
   const [dataTask, setDataTask] = useState({});
+  const { state: data, fetchInitialData } = useAppContext();
 
-  const handleChange = (e: React.ChangeEvent<HTMInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataTask({
       ...dataTask,
       [e.target.name]: e.target.value
@@ -30,8 +31,9 @@ const TaskModalUpdate: FC<Props> = ({ openModal, setOpenModal, dataToUpdate }) =
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newTask = await UpdateTask(dataTask);
+    await UpdateTask(dataTask);
     setOpenModal(!openModal)
+    fetchInitialData();
   }
 
   return (

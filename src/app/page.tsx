@@ -11,8 +11,7 @@ import { useSession } from "next-auth/react";
 import { useAppContext } from "@/context";
 
 function Home(): JSX.Element  {
-  const { state:datanew } = useAppContext();
-  const [data, setData] = useState({});
+  const { state: data, fetchInitialData, setState: setData } = useAppContext();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const { data: session } = useSession();
 
@@ -94,20 +93,16 @@ function Home(): JSX.Element  {
     setData(newData)
   }
 
-  console.log("data form me", data);
-
   useEffect(() => {
-    if (datanew) {
-      setData(datanew)
-    }
-  }, [datanew])
+    if (session?.user) fetchInitialData();
+  }, [session?.user])
 
   return (
     <>
       <Navbar name={session?.user?.name} />
       <main className="mx-16 mt-24 flex space-x-4 p-4 rounded-xl">
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          {datanew && data.columnsOrder?.map((columnId) => {
+          {data && data.columnsOrder?.map((columnId) => {
             const column: ColumnTypes = data.columns[columnId];
             const tasks: TaskTypes[] = column?.tasks.map((taskId) => data.tasks[taskId]);
             return (

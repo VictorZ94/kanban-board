@@ -49,3 +49,68 @@ export async function POST(request: Request, { params }: Params) {
     }
   }
 }
+
+export async function PUT(request: Request, { params }: Params) {
+  try {
+    const { title } = await request.json();
+
+    const updateColumn = await db.column.update({
+      where: {
+        id: Number(params.id),
+      },
+      data: {
+        title,
+      },
+    });
+
+    if (!updateColumn) {
+      return NextResponse.json(
+        { message: "Column not updated" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(updateColumn);
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+  }
+}
+
+export async function DELETE(request: Request, { params }: Params) {
+  try {
+    const deleteColumn = await db.column.delete({
+      where: {
+        id: Number(params.id),
+      },
+    });
+
+    if (!deleteColumn) {
+      return NextResponse.json(
+        { message: "Column not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(deleteColumn);
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+  }
+}
