@@ -37,6 +37,7 @@ interface Task {
   status: string;
 }
 
+// function to convert array task from objects
 export function arrayToObjectTask(array: Task[]): { [id: number]: Task } {
   const result: { [id: number]: Task } = {};
   array.forEach((item) => {
