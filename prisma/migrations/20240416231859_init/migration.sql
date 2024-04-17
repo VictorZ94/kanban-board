@@ -35,6 +35,3 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Task_title_key" ON "Task"("title");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Task_columnId_key" ON "Task"("columnId");

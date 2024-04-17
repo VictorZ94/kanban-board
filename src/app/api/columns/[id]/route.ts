@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { db } from "@/libs/prisma";
 
+export const dynamic = "force-dynamic";
+
 interface Params {
   params: { id: string };
 }

@@ -16,7 +16,7 @@ const TaskModal: FC<Props> = ({ openModal, setOpenModal, columnId }) => {
   const [dataTask, setDataTask] = useState({});
   const { state: data, setState } = useAppContext();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDataTask({
       ...dataTask,
       [e.target.name]: e.target.value
