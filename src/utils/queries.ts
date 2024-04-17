@@ -4,9 +4,7 @@ import axios from "axios";
 
 export async function getColumnsByUserId(userId: number) {
   try {
-    const columns = await axios.get(
-      `http://localhost:3000/api/columns/${userId}`
-    );
+    const columns = await axios.get(`/api/columns/${userId}`);
     if (columns.status === 200 && columns.data.length > 0) {
       const columnsData = arrayToObject(columns.data);
       return columnsData;
@@ -20,12 +18,9 @@ export async function getColumnsByUserId(userId: number) {
 
 export async function CreateColumn(columnName: string, userId: number) {
   try {
-    const newColumn = await axios.post(
-      `http://localhost:3000/api/columns/${userId}`,
-      {
-        title: columnName,
-      }
-    );
+    const newColumn = await axios.post(`/api/columns/${userId}`, {
+      title: columnName,
+    });
     if (newColumn.status === 200) {
       return newColumn.data;
     } else {
@@ -43,7 +38,7 @@ interface InfoColumn {
 
 export async function getTasks() {
   try {
-    const tasks = await axios.get(`http://localhost:3000/api/tasks`);
+    const tasks = await axios.get("/api/tasks");
     // console.log("from quesris", tasks);
     if (tasks.status === 200 && tasks.data.length > 0) {
       const tasksData = arrayToObjectTask(tasks.data);
@@ -59,10 +54,7 @@ export async function getTasks() {
 
 export async function CreateTask(columnId: number, data: InfoColumn) {
   try {
-    const newColumn = await axios.post(
-      `http://localhost:3000/api/tasks/${columnId}`,
-      data
-    );
+    const newColumn = await axios.post(`/api/tasks/${columnId}`, data);
     if (newColumn.status === 200) {
       return newColumn.data;
     } else {
@@ -75,10 +67,7 @@ export async function CreateTask(columnId: number, data: InfoColumn) {
 
 export async function UpdateTask(data: TaskTypes) {
   try {
-    const taskUpdated = await axios.put(
-      `http://localhost:3000/api/tasks/${data.id}`,
-      data
-    );
+    const taskUpdated = await axios.put(`/api/tasks/${data.id}`, data);
     if (taskUpdated.status === 200) {
       return taskUpdated.data;
     } else {
@@ -91,9 +80,7 @@ export async function UpdateTask(data: TaskTypes) {
 
 export async function RemoveTask(taskId: number) {
   try {
-    const newColumn = await axios.delete(
-      `http://localhost:3000/api/tasks/${taskId}`
-    );
+    const newColumn = await axios.delete(`/api/tasks/${taskId}`);
     if (newColumn.status === 200) {
       return newColumn.data;
     } else {
